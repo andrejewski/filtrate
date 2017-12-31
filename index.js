@@ -68,16 +68,6 @@ function getLoadedImage (url) {
   })
 }
 
-function processImageData1 (imageData) {
-  const data = imageData.data
-  const size = data.length
-  const newData = new Uint8ClampedArray(size)
-  for (var i = 0; i < size; i++) {
-    newData[i] = data[i] / 2
-  }
-  return newData
-}
-
 function isSimilar (data, a, b) {
   const threshold = 3
   return (
@@ -93,10 +83,9 @@ function averageSimilarNeighbors (imageData, hits, i, color, set) {
   hits[i] = 1
   set.push(i)
 
-  const { data, width, height } = imageData
+  const { data, width } = imageData
   const indexSize = data.length
   const indexWidth = width * 4
-  const indexHeight = height * 4
 
   if (!color.length) {
     color.push(data[i], data[i + 1], data[i + 2], data[i + 3])
@@ -143,7 +132,7 @@ function processImageData (imageData) {
     averageSimilarNeighbors(imageData, hits, i, color, set)
     const [r, g, b, a] = color
     const setSize = set.length
-    for (j = 0; j < setSize; j++) {
+    for (let j = 0; j < setSize; j++) {
       const p = set[j]
       newData[p] = r
       newData[p + 1] = g
